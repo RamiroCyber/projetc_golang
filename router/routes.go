@@ -1,11 +1,11 @@
-package routes
+package router
 
 import (
 	"github.com/RamiroCyber/projetc_golang/config"
 	"github.com/gofiber/fiber/v2"
 )
 
-func Routes() *fiber.App {
+func InitializeRoutes() *fiber.App {
 	app := config.ConfigsRoutes()
 
 	app.Get("/", func(c *fiber.Ctx) error {

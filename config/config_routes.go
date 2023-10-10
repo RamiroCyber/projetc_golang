@@ -7,7 +7,7 @@ import (
 )
 
 func ConfigsRoutes() *fiber.App {
-	cors := cors.New(cors.Config{
+	c := cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowMethods: strings.Join([]string{
 			fiber.MethodGet,
@@ -24,7 +24,7 @@ func ConfigsRoutes() *fiber.App {
 		BodyLimit: 10 * 1024 * 1024,
 	})
 
-	app.Use(cors)
+	app.Use(c)
 
 	return app
 }

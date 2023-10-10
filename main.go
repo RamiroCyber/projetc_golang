@@ -1,9 +1,16 @@
 package main
 
-import "github.com/RamiroCyber/projetc_golang/routes"
+import (
+	"fmt"
+	"github.com/RamiroCyber/projetc_golang/config"
+	"github.com/RamiroCyber/projetc_golang/router"
+)
 
 func main() {
-	app := routes.Routes()
+	port := config.LoadEnvironment()
 
-	app.Listen(":5000")
+	app := router.InitializeRoutes()
+
+	app.Listen(fmt.Sprintf(":%s", port))
+
 }
