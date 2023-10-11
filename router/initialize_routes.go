@@ -3,7 +3,7 @@ package router
 import (
 	"fmt"
 	"github.com/RamiroCyber/projetc_golang/config"
-	"github.com/RamiroCyber/projetc_golang/router/handles"
+	"github.com/RamiroCyber/projetc_golang/router/handler"
 	"github.com/RamiroCyber/projetc_golang/utils"
 	"github.com/gofiber/fiber/v2"
 )
@@ -19,13 +19,13 @@ func InitializeRoutes() *fiber.App {
 	})
 
 	//HEALTHCHECK
-	v1.Get("/health", handles.HealthCheck)
+	v1.Get("/health", handler.HealthCheck)
 
 	//OPENING
-	v1.Get("/opportunities", handles.HealthCheck)
-	v1.Post("/opportunities", handles.HealthCheck)
-	v1.Put("/opportunities", handles.HealthCheck)
-	v1.Delete("/opportunities", handles.HealthCheck)
+	v1.Get("/opportunities", handler.HealthCheck)
+	v1.Post("/opportunities", handler.HealthCheck)
+	v1.Put("/opportunities", handler.HealthCheck)
+	v1.Delete("/opportunities", handler.HealthCheck)
 
 	return app
 }
