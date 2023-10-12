@@ -1,7 +1,7 @@
 package config
 
 import (
-	"encoding/json"
+	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"strings"
