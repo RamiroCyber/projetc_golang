@@ -1,4 +1,4 @@
-package utils
+package util
 
 const (
 	V1      = "v1"

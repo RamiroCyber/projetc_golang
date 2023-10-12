@@ -2,15 +2,15 @@ package handler
 
 import (
 	"github.com/RamiroCyber/projetc_golang/config/database"
-	"github.com/RamiroCyber/projetc_golang/models"
-	"github.com/RamiroCyber/projetc_golang/utils"
+	"github.com/RamiroCyber/projetc_golang/model"
+	"github.com/RamiroCyber/projetc_golang/util"
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
 )
 
 func CreateUser(c *fiber.Ctx) error {
-	user := new(models.User)
+	user := new(model.User)
 	if err := c.BodyParser(user); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
@@ -19,13 +19,13 @@ func CreateUser(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"errors": errors})
 	}
 
-	utils.GenerateHashPassword(&user.Password)
+	util.GenerateHashPassword(&user.Password)
 
 	user.CreatedAt = time.Now()
 
 	res, err := database.UserCollection.InsertOne(c.Context(), user)
 	if err != nil {
-		utils.Logger("ERROR", err.Error())
+		util.Logger("ERROR", err.Error())
 		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 	}
 

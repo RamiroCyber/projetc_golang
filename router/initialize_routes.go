@@ -4,17 +4,17 @@ import (
 	"fmt"
 	"github.com/RamiroCyber/projetc_golang/config"
 	"github.com/RamiroCyber/projetc_golang/router/handler"
-	"github.com/RamiroCyber/projetc_golang/utils"
+	"github.com/RamiroCyber/projetc_golang/util"
 	"github.com/gofiber/fiber/v2"
 )
 
 func InitializeRoutes() *fiber.App {
 	app := config.ConfigsRoutes()
 
-	api := app.Group(utils.API)
+	api := app.Group(util.API)
 
-	v1 := api.Group(fmt.Sprint("/", utils.V1), func(c *fiber.Ctx) error {
-		c.Set(utils.VERSION, utils.V1)
+	v1 := api.Group(fmt.Sprint("/", util.V1), func(c *fiber.Ctx) error {
+		c.Set(util.VERSION, util.V1)
 		return c.Next()
 	})
 
