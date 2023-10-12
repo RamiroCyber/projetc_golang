@@ -21,11 +21,8 @@ func InitializeRoutes() *fiber.App {
 	//HEALTHCHECK
 	v1.Get("/health", handler.HealthCheck)
 
-	//OPENING
-	v1.Get("/opportunities", handler.HealthCheck)
-	v1.Post("/opportunities", handler.HealthCheck)
-	v1.Put("/opportunities", handler.HealthCheck)
-	v1.Delete("/opportunities", handler.HealthCheck)
+	//USER
+	v1.Post("/user", handler.CreateUser)
 
 	return app
 }
