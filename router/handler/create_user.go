@@ -13,8 +13,8 @@ func CreateUser(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
 
-	if err := user.Validate(); err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+	if errors := user.Validate(); errors != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"errors": errors})
 	}
 
 	res, err := database.UserCollection.InsertOne(c.Context(), user)

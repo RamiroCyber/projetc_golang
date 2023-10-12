@@ -1,7 +1,6 @@
 package models
 
 import (
-	"errors"
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -15,12 +14,14 @@ type User struct {
 	Password  string             `bson:"password,omitempty" validate:"required"`
 }
 
-func (u *User) Validate() error {
+func (u *User) Validate() []string {
 	err := validator.New().Struct(u)
 	if err != nil {
+		var allErrors []string
 		for _, err := range err.(validator.ValidationErrors) {
-			return errors.New(fmt.Sprintf("Field %s: %s", err.Field(), err.Tag()))
+			allErrors = append(allErrors, fmt.Sprintf("Field %s: %s", err.Field(), err.Tag()))
 		}
+		return allErrors
 	}
 	return nil
 }
