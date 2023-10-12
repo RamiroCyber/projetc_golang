@@ -2,19 +2,18 @@ package handler
 
 import (
 	"github.com/RamiroCyber/projetc_golang/config/database"
+	"github.com/RamiroCyber/projetc_golang/models"
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type User struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty"`
-	FirstName string             `bson:"first_name,omitempty"`
-	LastName  string             `bson:"last_name,omitempty"`
-}
-
 func CreateUser(c *fiber.Ctx) error {
-	user := new(User)
+	user := new(models.User)
 	if err := c.BodyParser(user); err != nil {
+		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
+	}
+
+	if err := user.Validate(); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
 
