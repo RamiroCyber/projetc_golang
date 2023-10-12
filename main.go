@@ -36,6 +36,6 @@ func main() {
 	defer cancel()
 	database.Client.Disconnect(ctx)
 
-	log.Println("Servidor Pausado")
+	log.Println("Servidor Parado")
 
 }
