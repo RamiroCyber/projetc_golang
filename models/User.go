@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"time"
 )
 
 type User struct {
@@ -12,6 +13,7 @@ type User struct {
 	FirstName string             `bson:"first_name,omitempty" validate:"required"`
 	LastName  string             `bson:"last_name,omitempty" validate:"required"`
 	Password  string             `bson:"password,omitempty" validate:"required"`
+	CreatedAt time.Time          `bson:"created_at,omitempty"`
 }
 
 func (u *User) Validate() []string {

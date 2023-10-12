@@ -6,6 +6,7 @@ import (
 	"github.com/RamiroCyber/projetc_golang/utils"
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"time"
 )
 
 func CreateUser(c *fiber.Ctx) error {
@@ -19,6 +20,8 @@ func CreateUser(c *fiber.Ctx) error {
 	}
 
 	utils.GenerateHashPassword(&user.Password)
+
+	user.CreatedAt = time.Now()
 
 	res, err := database.UserCollection.InsertOne(c.Context(), user)
 	if err != nil {
