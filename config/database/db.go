@@ -28,5 +28,5 @@ func ConnectDB() {
 	}
 
 	Client = client
-	log.Println("Conectado ao MongoDB!")
+	log.Println("Connected to MongoDB!")
 }

@@ -1,13 +1,14 @@
 package config
 
 import (
+	"fmt"
+	"github.com/RamiroCyber/projetc_golang/util"
 	"github.com/joho/godotenv"
-	"log"
 )
 
 func LoadEnvironment() {
 	err := godotenv.Load(".env")
 	if err != nil {
-		log.Fatalf("Erro ao carregar o arquivo .env: %v", err)
+		util.Logger("ERROR", fmt.Sprintf(".env: %v", err))
 	}
 }
