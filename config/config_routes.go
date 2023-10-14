@@ -17,7 +17,7 @@ func ConfigsRoutes() *fiber.App {
 			fiber.MethodDelete,
 			fiber.MethodPatch,
 		}, ","),
-		AllowHeaders:     "*",
+		AllowHeaders:     "Origin, Content-Type, Accept, Authorization",
 		AllowCredentials: true,
 	})
 

@@ -3,6 +3,7 @@ package router
 import (
 	"fmt"
 	"github.com/RamiroCyber/projetc_golang/config"
+	"github.com/RamiroCyber/projetc_golang/middleware"
 	"github.com/RamiroCyber/projetc_golang/router/handler"
 	"github.com/RamiroCyber/projetc_golang/util"
 	"github.com/gofiber/fiber/v2"
@@ -25,7 +26,7 @@ func InitializeRoutes() *fiber.App {
 	v1.Post("/login", handler.Login)
 
 	//USER
-	v1.Post("/user", handler.CreateUser)
+	v1.Post("/user", middleware.JWTMiddleware, handler.CreateUser)
 
 	return app
 }

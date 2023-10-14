@@ -13,14 +13,14 @@ import (
 	"time"
 )
 
-func main() {
+func init() {
 	config.LoadEnvironment()
-
 	database.ConnectDB()
 	database.SetupCollections()
+}
 
+func main() {
 	app := router.InitializeRoutes()
-
 	go func() {
 		if err := app.Listen(fmt.Sprintf(":%s", os.Getenv("port_application"))); err != nil {
 			log.Panicf("Falha ao iniciar o servidor : %v", err)
