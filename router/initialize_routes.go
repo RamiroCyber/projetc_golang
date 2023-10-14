@@ -21,6 +21,9 @@ func InitializeRoutes() *fiber.App {
 	//HEALTHCHECK
 	v1.Get("/health", handler.HealthCheck)
 
+	//AUTHENTICATION
+	v1.Post("/login", handler.Login)
+
 	//USER
 	v1.Post("/user", handler.CreateUser)
 

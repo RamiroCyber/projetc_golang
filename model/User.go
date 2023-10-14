@@ -10,8 +10,8 @@ import (
 type User struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
 	Email     string             `bson:"email,omitempty" validate:"required,email"`
-	FirstName string             `bson:"first_name,omitempty" validate:"required"`
-	LastName  string             `bson:"last_name,omitempty" validate:"required"`
+	FirstName string             `json:"first_name" bson:"first_name,omitempty" validate:"required"`
+	LastName  string             `json:"last_name"bson:"last_name,omitempty" validate:"required"`
 	Password  string             `bson:"password,omitempty" validate:"required"`
 	CreatedAt time.Time          `bson:"created_at,omitempty"`
 }
