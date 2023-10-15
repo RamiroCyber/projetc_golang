@@ -22,6 +22,10 @@ func Register(c *fiber.Ctx) error {
 
 	uppercaseWithTimestamp(user)
 
+	if isValid := util.IsValidPhoneNumber(user.Phone); isValid == false {
+		return c.Status(fiber.StatusBadRequest).SendString("is not a valid phone number")
+
+	}
 	util.GenerateHashPassword(&user.Password)
 
 	res, err := database.UserCollection.InsertOne(c.Context(), user)
