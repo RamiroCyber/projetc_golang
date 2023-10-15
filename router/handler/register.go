@@ -5,14 +5,16 @@ import (
 	"github.com/RamiroCyber/projetc_golang/model"
 	"github.com/RamiroCyber/projetc_golang/util"
 	"github.com/gofiber/fiber/v2"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"strings"
 	"time"
 )
 
 func Register(c *fiber.Ctx) error {
 	user := new(model.User)
-	if err := c.BodyParser(user); err != nil {
+
+	err := c.BodyParser(user)
+
+	if err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
 
@@ -20,28 +22,38 @@ func Register(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"errors": errors})
 	}
 
-	uppercaseWithTimestamp(user)
+	prepareUserData(user)
 
-	if isValid := util.IsValidPhoneNumber(user.Phone); isValid == false {
-		return c.Status(fiber.StatusBadRequest).SendString("is not a valid phone number")
-
+	if !util.IsValidPhoneNumber(user.Phone) {
+		return c.Status(fiber.StatusBadRequest).SendString("Invalid phone number")
 	}
-	util.GenerateHashPassword(&user.Password)
 
-	res, err := database.UserCollection.InsertOne(c.Context(), user)
-	if err != nil {
+	if err := saveUserToDatabase(c, user); err != nil {
 		util.Logger("ERROR", err.Error())
-		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+		return c.Status(fiber.StatusInternalServerError).SendString("Failed to register user")
 	}
 
-	id := res.InsertedID.(primitive.ObjectID)
-	return c.Status(fiber.StatusCreated).JSON(fiber.Map{"id": id.Hex()})
+	return c.SendStatus(fiber.StatusCreated)
 }
 
-func uppercaseWithTimestamp(user *model.User) {
+func prepareUserData(user *model.User) {
+	uppercaseFields(user)
+	setTimestamp(user)
+	util.GenerateHashPassword(&user.Password)
+}
+
+func uppercaseFields(user *model.User) {
 	user.Email = strings.ToUpper(user.Email)
 	user.FirstName = strings.ToUpper(user.FirstName)
 	user.LastName = strings.ToUpper(user.LastName)
 	user.Role = strings.ToUpper(user.Role)
+}
+
+func setTimestamp(user *model.User) {
 	user.CreatedAt = time.Now()
+}
+
+func saveUserToDatabase(c *fiber.Ctx, user *model.User) error {
+	_, err := database.UserCollection.InsertOne(c.Context(), user)
+	return err
 }
