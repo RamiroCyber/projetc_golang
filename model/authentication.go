@@ -7,7 +7,7 @@ import (
 
 type Authentication struct {
 	Email    string `bson:"email,omitempty" validate:"required,email"`
-	Password string `bson:"password,omitempty" validate:"required"`
+	Password string `bson:"password,omitempty" validate:"required,min=6,max=12"`
 }
 
 func (a *Authentication) Validate() []string {

@@ -12,8 +12,11 @@ type User struct {
 	Email     string             `bson:"email,omitempty" validate:"required,email"`
 	FirstName string             `json:"first_name" bson:"first_name,omitempty" validate:"required"`
 	LastName  string             `json:"last_name"bson:"last_name,omitempty" validate:"required"`
-	Password  string             `bson:"password,omitempty" validate:"required"`
+	Password  string             `bson:"password,omitempty" validate:"required,min=6,max=12"`
+	Role      string             `bson:"role,omitempty" validate:"required"`
 	CreatedAt time.Time          `bson:"created_at,omitempty"`
+	UpdatedAt time.Time          `bson:"updated_at,omitempty"`
+	DeletedAt time.Time          `bson:"deleted_at,omitempty"`
 }
 
 func (u *User) Validate() []string {

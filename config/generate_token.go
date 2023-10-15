@@ -12,7 +12,7 @@ func GenerateToken(userId string, c *fiber.Ctx) (string, error) {
 	claims := &jwt.RegisteredClaims{
 		Subject:   userId,
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(3 * time.Hour)),
-		Issuer:    "test",
+		Issuer:    "myApp",
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
