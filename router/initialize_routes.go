@@ -27,7 +27,7 @@ func InitializeRoutes() *fiber.App {
 
 	//USER
 	v1.Post("/register", handler.Register)
-	v1.Delete("/user", middleware.JWTMiddleware, handler.DeletedUser)
+	v1.Delete("/user/:id", middleware.JWTMiddleware, handler.DeleteUser)
 
 	return app
 }
