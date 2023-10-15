@@ -4,6 +4,7 @@ import (
 	"github.com/RamiroCyber/projetc_golang/config/database"
 	"github.com/RamiroCyber/projetc_golang/model"
 	"github.com/RamiroCyber/projetc_golang/util"
+	"github.com/RamiroCyber/projetc_golang/util/constants"
 	"github.com/gofiber/fiber/v2"
 	"strings"
 	"time"
@@ -12,9 +13,7 @@ import (
 func Register(c *fiber.Ctx) error {
 	user := new(model.User)
 
-	err := c.BodyParser(user)
-
-	if err != nil {
+	if err := c.BodyParser(user); err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}
 
@@ -25,12 +24,12 @@ func Register(c *fiber.Ctx) error {
 	prepareUserData(user)
 
 	if !util.IsValidPhoneNumber(user.Phone) {
-		return c.Status(fiber.StatusBadRequest).SendString("Invalid phone number")
+		return c.Status(fiber.StatusBadRequest).SendString(constants.InvalidPhone)
 	}
 
 	if err := saveUserToDatabase(c, user); err != nil {
-		util.Logger("ERROR", err.Error())
-		return c.Status(fiber.StatusInternalServerError).SendString("Failed to register user")
+		util.Logger(constants.Error, err.Error())
+		return c.Status(fiber.StatusInternalServerError).SendString(constants.FailedRegister)
 	}
 
 	return c.SendStatus(fiber.StatusCreated)

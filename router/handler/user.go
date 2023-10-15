@@ -4,18 +4,18 @@ import (
 	"errors"
 	"github.com/RamiroCyber/projetc_golang/config/database"
 	"github.com/RamiroCyber/projetc_golang/util"
+	"github.com/RamiroCyber/projetc_golang/util/constants"
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
 )
 
 func DeleteUser(c *fiber.Ctx) error {
 	objID, err := getObjectIDFromParams(c)
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("invalid user id")
+		return c.Status(fiber.StatusBadRequest).SendString(constants.InvalidUserID)
 	}
 
 	err = deleteUser(c, objID)
@@ -34,20 +34,18 @@ func deleteUser(c *fiber.Ctx, objID primitive.ObjectID) error {
 	filter := bson.M{"_id": objID}
 	update := bson.M{"$set": bson.M{"deleted_at": time.Now()}}
 
-	opts := options.FindOneAndUpdate().SetReturnDocument(options.After)
-	res := database.UserCollection.FindOneAndUpdate(c.Context(), filter, update, opts)
+	res := database.UserCollection.FindOneAndUpdate(c.Context(), filter, update)
 	if err := res.Err(); err != nil {
 		return err
 	}
-
 	return nil
 }
 
 func handleError(err error) error {
 	if errors.Is(err, mongo.ErrNoDocuments) {
-		return fiber.NewError(fiber.StatusNotFound, "user not found")
+		return fiber.NewError(fiber.StatusNotFound, constants.UserNotFound)
 	}
 
-	util.Logger("ERROR", err.Error())
+	util.Logger(constants.Error, err.Error())
 	return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 }

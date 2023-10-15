@@ -5,17 +5,17 @@ import (
 	"github.com/RamiroCyber/projetc_golang/config"
 	"github.com/RamiroCyber/projetc_golang/middleware"
 	"github.com/RamiroCyber/projetc_golang/router/handler"
-	"github.com/RamiroCyber/projetc_golang/util"
+	"github.com/RamiroCyber/projetc_golang/util/constants"
 	"github.com/gofiber/fiber/v2"
 )
 
 func InitializeRoutes() *fiber.App {
 	app := config.ConfigsRoutes()
 
-	api := app.Group(util.API)
+	api := app.Group(constants.API)
 
-	v1 := api.Group(fmt.Sprint("/", util.V1), func(c *fiber.Ctx) error {
-		c.Set(util.VERSION, util.V1)
+	v1 := api.Group(fmt.Sprint("/", constants.V1), func(c *fiber.Ctx) error {
+		c.Set(constants.VERSION, constants.V1)
 		return c.Next()
 	})
 

@@ -6,6 +6,7 @@ import (
 	"github.com/RamiroCyber/projetc_golang/config/database"
 	"github.com/RamiroCyber/projetc_golang/model"
 	"github.com/RamiroCyber/projetc_golang/util"
+	"github.com/RamiroCyber/projetc_golang/util/constants"
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -25,19 +26,19 @@ func Login(c *fiber.Ctx) error {
 
 	user := new(model.User)
 	if err := database.UserCollection.FindOne(c.Context(), bson.M{"email": strings.ToUpper(auth.Email)}).Decode(&user); errors.Is(err, mongo.ErrNoDocuments) {
-		return c.Status(fiber.StatusUnauthorized).SendString("Invalid email or password")
+		return c.Status(fiber.StatusUnauthorized).SendString(constants.InvalidAuth)
 	} else if err != nil {
-		util.Logger("ERROR", err.Error())
+		util.Logger(constants.Error, err.Error())
 		return c.Status(fiber.StatusInternalServerError).SendString("Database error")
 	}
 
 	if err := util.CheckPasswordHash(auth.Password, user.Password); err == false {
-		return c.Status(fiber.StatusUnauthorized).SendString("Invalid email or password")
+		return c.Status(fiber.StatusUnauthorized).SendString(constants.InvalidAuth)
 	}
 
 	tokenString, err := config.GenerateToken(user.ID.Hex(), c)
 	if err != nil {
-		util.Logger("ERROR", err.Error())
+		util.Logger(constants.Error, err.Error())
 		return c.Status(fiber.StatusInternalServerError).SendString("Error generating token")
 	}
 
